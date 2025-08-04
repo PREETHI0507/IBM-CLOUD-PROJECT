@@ -1,49 +1,88 @@
-# 🔌 Power System Fault Detection Using Machine Learning
+# ⚡ Power System Fault Detection Using Machine Learning
 
-This project focuses on detecting and classifying faults in power distribution systems using machine learning techniques. The model is trained on electrical parameters such as voltage, current, and phasor measurements to identify different fault types and enhance grid stability.
+This project presents a machine learning-based solution to automatically detect and classify faults in power distribution systems. By analyzing electrical parameters such as voltage, current, and phasor measurements, the model predicts fault types, helping maintain the stability and efficiency of the power grid.
 
 ---
 
 ## 📌 Problem Statement
 
-Power distribution networks are prone to faults like line-to-ground, line-to-line, and three-phase faults. These can disrupt the power supply and affect system reliability. This project aims to develop a machine learning-based solution that accurately detects and classifies such faults to improve response time and grid performance.
+Power distribution systems are prone to various types of faults such as line-to-ground, line-to-line, and three-phase faults. These faults can disrupt power supply and reduce system reliability. The challenge lies in accurately detecting and classifying these faults using electrical data, ensuring quick recovery and grid stability.
 
 ---
 
 ## 🚀 Proposed Solution
 
-- A supervised learning model is trained on fault data to classify fault types.
-- Random Forest (or SVM based on performance) is used as the classifier.
-- Real-time fault predictions are enabled using IBM Watson Studio deployment.
-- The model supports faster recovery actions and improves overall system efficiency.
+- Use supervised machine learning (Random Forest or SVM) to classify fault types.
+- Train the model using labeled electrical parameter data.
+- Deploy the model to IBM Watson Studio with an accessible API endpoint.
+- Enable real-time predictions to support automated fault detection.
 
 ---
 
 ## 🛠️ Tools and Technologies
 
-- **IBM Watson Studio** (Model development & deployment)
-- **IBM Cloud Object Storage** (Dataset storage)
+- **IBM Watson Studio** (Model development and deployment)
+- **IBM Cloud Object Storage** (Data storage)
+- **IBM Machine Learning Runtime**
 - **Python**
 - **Random Forest Classifier / SVM**
-- **Supervised Learning**
+- **Supervised Learning Approach**
 
 ---
 
-## 🧪 Dataset
+## 📊 Dataset
 
-- Sourced from Kaggle (public dataset)
-- Includes: voltage, current, and phasor readings
-- Preprocessing steps: normalization, missing value handling
+- Source: Kaggle (public dataset)
+- Features used: voltage, current, phasor measurements
+- Preprocessing included normalization and cleaning
 
 ---
 
-## 📊 Model Training and Deployment
+## 🧠 Algorithm & Deployment
 
-- Trained using labeled data for fault classification
-- Deployed on IBM Watson Studio with an API endpoint for real-time predictions
-- Example Python integration for predictions:
-  
+- **Algorithm:** Random Forest Classifier (chosen for performance)
+- **Input:** Voltage, current, and phasor readings
+- **Training:** Labeled fault data using supervised learning
+- **Deployment:** IBM Watson Studio with real-time API endpoint for scoring
+
+---
+
+## 🔗 API Endpoint
+
+The trained model has been deployed to IBM Cloud and is accessible via the following public endpoint:
+https://au-syd.ml.cloud.ibm.com/ml/v4/deployments/844683d5-2809-4351-84fb-1fb51ebd430c/predictions?version=2021-05-01
+
+Use the script `predict_api.py` to test the API with your own input data.
+
+---
+
+## 🐍 Sample Prediction Code (Python)
+
 ```python
-response_scoring = requests.post('<API_ENDPOINT>',
+import requests
+
+# Replace with your actual Bearer token
+mltoken = "your_IBM_cloud_token"
+
+payload_scoring = {
+    "input_data": [
+        {
+            "fields": ["voltage", "current", "phasor"],
+            "values": [[230.0, 5.2, 0.98]]
+        }
+    ]
+}
+
+url = "https://au-syd.ml.cloud.ibm.com/ml/v4/deployments/844683d5-2809-4351-84fb-1fb51ebd430c/predictions?version=2021-05-01"
+
+response = requests.post(
+    url,
     json=payload_scoring,
-    headers={'Authorization': 'Bearer ' + mltoken})
+    headers={"Authorization": "Bearer " + mltoken}
+)
+
+print("Scoring response:")
+print(response.json())
+
+
+
